@@ -5,22 +5,17 @@ import { Card, CardImg, CardText, CardBody,
 class DishDetail extends Component {
 
     renderDishDetails(dish) {
-        if (dish != null)
-            return(
-                <div className="col-12 col-md-5 m-1">
-                    <Card>
-                        <CardImg top src={dish.image} alt={dish.name} />
-                        <CardBody>
-                            <CardTitle>{dish.name}</CardTitle>
-                            <CardText>{dish.description}</CardText>
-                        </CardBody>
-                    </Card>
-                </div>
-            );
-        else
-            return(
-                <div></div>
-            );
+        return(
+            <div className="col-12 col-md-5 m-1">
+                <Card>
+                    <CardImg top src={dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            </div>
+        );
     }
 
     renderComments(comments) {
@@ -43,13 +38,18 @@ class DishDetail extends Component {
     }
 
     render() {
+        if(this.props.dish != null)
+            return(
 
-        return(
-            <div className="row">
-                {this.props.dish && this.renderDishDetails(this.props.dish)}
-                {this.props.dish.comments && this.renderComments(this.props.dish.comments)}
-            </div>
-        )
+                <div className="container">
+                    <div className="row">
+                        {this.props.dish && this.renderDishDetails(this.props.dish)}
+                        {this.props.dish.comments && this.renderComments(this.props.dish.comments)}
+                    </div>
+                </div>
+            );
+        else
+            return(<div></div>);
     }
 }
 
