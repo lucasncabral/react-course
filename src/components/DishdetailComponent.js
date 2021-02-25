@@ -29,8 +29,7 @@ class CommentForm extends Component {
     }
 
     handleSubmitComment(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -47,7 +46,7 @@ class CommentForm extends Component {
                     <LocalForm onSubmit={(values) => this.handleSubmitComment(values)}>
                         <Row className="form-group">
                             <Col md={{size:12}}>
-                                <Label htmlFor="username">Rating</Label>
+                                <Label htmlFor="rating">Rating</Label>
                                 <Control.select model=".contactType" name="contactType"
                                                 className="form-control">
                                     <option>1</option>
@@ -61,8 +60,8 @@ class CommentForm extends Component {
 
                         <Row className="form-group">
                             <Col md={{size:12}}>
-                                <Label htmlFor="username">Your Name</Label>
-                                    <Control.text model=".username" id="username" name="username"
+                                <Label htmlFor="author">Your Name</Label>
+                                    <Control.text model=".author" id="author" name="author"
                                                   placeholder="Your Name"
                                                   className="form-control"
                                                   validators={{
@@ -71,7 +70,7 @@ class CommentForm extends Component {
                                     />
                                 <Errors
                                     className="text-danger"
-                                    model=".username"
+                                    model=".author"
                                     show="touched"
                                     messages={{
                                         minLength: 'Must be greater than 2 characters',
@@ -82,8 +81,8 @@ class CommentForm extends Component {
                         </Row>
                         <Row className="form-group">
                             <Col md={{size:12}}>
-                                <Label htmlFor="message">Comment</Label>
-                                    <Control.textarea model=".message" id="message" name="message"
+                                <Label htmlFor="comment">Comment</Label>
+                                    <Control.textarea model=".comment" id="comment" name="comment"
                                                       rows="6"
                                                       className="form-control" />
                             </Col>
@@ -117,7 +116,7 @@ function RenderDishDetails({dish}) {
     );
 }
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
     let dateFormat = { year: 'numeric', month: 'short', day: 'numeric' };
     const lista = comments.map((item) =>
         <ul className="list-unstyled">
@@ -130,7 +129,7 @@ function RenderComments({comments}) {
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
                 {lista}
-                <CommentForm/>
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         );
     else
@@ -154,7 +153,9 @@ const DishDetail = (props) => {
 
                 <div className="row">
                     {props.dish && <RenderDishDetails dish={props.dish} />}
-                    {props.comments && <RenderComments comments={props.comments}/>}
+                    {props.comments && <RenderComments comments={props.comments}
+                                                       addComment={props.addComment}
+                                                       dishId={props.dish.id} />}
                 </div>
             </div>
         );
